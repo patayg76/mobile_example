@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MicrobiomeBank — Design tokens
+   Style: Biomimetic / Organic 2.0  ·  DNA-blue + life-green
+   ============================================================ */
+@theme {
+  /* Surfaces */
+  --color-bg: #f0f9ff;
+  --color-surface: #ffffff;
+  --color-muted: #e8f2f8;
+
+  /* Ink (text) */
+  --color-ink: #0c4a6e;
+  --color-ink-soft: #335e7c;
+
+  /* Brand */
+  --color-primary: #0ea5e9;
+  --color-secondary: #0284c7;
+  --color-accent: #059669;
+  --color-lime: #10b981;
+  --color-glow: #22d3ee;
+  --color-line: #bae6fd;
+
+  /* Deep (hero / footer) */
+  --color-deep: #041f33;
+  --color-deep-2: #0a3a5c;
+
+  /* Fonts (wired up in layout.tsx via next/font) */
+  --font-display: var(--font-exo), system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
+
+  /* Motion */
+  --ease-organic: cubic-bezier(0.4, 0, 0.2, 1);
+  --breathe: 5s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  color: var(--color-deep);
+}
+
+/* ============================================================
+   Keyframes — all GPU-friendly (transform / opacity only)
+   ============================================================ */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33%      { transform: translate3d(14px, -22px, 0); }
+  66%      { transform: translate3d(-12px, 12px, 0); }
+}
+@keyframes morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+  50%      { border-radius: 62% 38% 40% 60% / 58% 63% 37% 42%; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(0.7); opacity: 0.65; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* ============================================================
+   Animation utilities
+   ============================================================ */
+.anim-breathe   { animation: breathe var(--breathe) var(--ease-organic) infinite; }
+.anim-float     { animation: floaty 14s var(--ease-organic) infinite; }
+.anim-morph     { animation: morph 12s var(--ease-organic) infinite; }
+.anim-spin-slow { animation: spin-slow 28s linear infinite; }
+.anim-bob       { animation: bob 3.5s var(--ease-organic) infinite; }
+.anim-gradient  {
+  background-size: 220% 220%;
+  animation: gradient-pan 9s var(--ease-organic) infinite;
+}
+
+/* Scroll-reveal — toggled by <Reveal> via IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease-organic),
+    transform 0.7s var(--ease-organic);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Shimmer sweep used on cards / buttons */
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklab, #fff 55%, transparent) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.shimmer:hover::after {
+  animation: shimmer 0.9s var(--ease-organic);
+}
+
+/* Animated gradient text */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-primary),
+    var(--color-accent),
+    var(--color-glow),
+    var(--color-primary)
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s linear infinite;
+}
+
+/* Thin grid backdrop */
+.bio-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-line) 70%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 75%);
+}
+
+/* ============================================================
+   Accessibility — honor reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
