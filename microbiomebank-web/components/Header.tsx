@@ -13,7 +13,7 @@ export function Logo({ className = "" }: { className?: string }) {
         <span className="relative h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_2px_rgba(255,255,255,0.8)]" />
       </span>
       <span className="text-lg font-semibold tracking-tight">
-        Microbiome<span className="text-primary">Bank</span>
+        MicroBiome<span className="text-primary"> Bank</span>
       </span>
     </span>
   );
@@ -60,7 +60,7 @@ export function Header() {
             href="#contact"
             className="shimmer inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
           >
-            Get started
+            Kapcsolat
             <Icons.arrow className="h-4 w-4" />
           </a>
         </div>
@@ -97,7 +97,7 @@ export function Header() {
             onClick={() => setOpen(false)}
             className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-base font-semibold text-white"
           >
-            Get started
+            Kapcsolat
             <Icons.arrow className="h-4 w-4" />
           </a>
         </nav>

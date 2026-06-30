@@ -1,134 +1,145 @@
 /**
- * MicrobiomeBank — site content
+ * MicroBiome Bank — site content (HU)
  * ------------------------------------------------------------------
- * PLACEHOLDER COPY. Replace the strings below with the real text,
- * stats, and links from microbiomebank.com. Everything the site
- * renders is sourced from this single file, so a content swap never
- * requires touching component code.
+ * Real copy sourced from microbiomebank.com (hu). Everything the site
+ * renders comes from this single file — a content swap never requires
+ * touching component code.
  */
 
 export const site = {
-  name: "MicrobiomeBank",
-  tagline: "The world's living library of the microbiome.",
+  name: "MicroBiome Bank",
+  tagline: "Egészség átültetése",
   email: "info@microbiomebank.com",
+  phone: "+36 30 013 5000",
 };
 
 export const nav = [
-  { label: "Platform", href: "#platform" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Why us", href: "#why" },
-  { label: "Contact", href: "#contact" },
+  { label: "Kapszulák", href: "#services" },
+  { label: "Folyamat", href: "#process" },
+  { label: "Háttér", href: "#platform" },
+  { label: "Miért mi", href: "#why" },
+  { label: "Kapcsolat", href: "#contact" },
 ];
 
 export const hero = {
-  eyebrow: "ISO 20387 ·  Biobanking Excellence",
-  titleLead: "Bank, characterize and access the",
-  titleGradient: "living microbiome",
-  sub: "MicrobiomeBank securely preserves, sequences and distributes microbial strains and samples — so research teams move from discovery to breakthrough without rebuilding the cold chain.",
-  ctaPrimary: { label: "Start banking", href: "#contact" },
-  ctaSecondary: { label: "Explore the platform", href: "#platform" },
-  chips: ["−196 °C cryopreservation", "Whole-genome sequencing", "API-first access"],
+  eyebrow: "Mikrobióta Transzfer Terápia · MTT",
+  titleLead: "Egészséges bélflóra,",
+  titleGradient: "orvosi felügyelettel",
+  sub: "Kivizsgált donoroktól származó, kapszulás humán baktérium-mátrix a bélflóra egyensúlyának helyreállítására — biztonságosan, otthon vagy kórházban.",
+  ctaPrimary: { label: "Alkalmazási területek", href: "#services" },
+  ctaSecondary: { label: "Kapszuláink", href: "#services" },
+  chips: ["Kivizsgált donorok", "Liofilizált kapszula", "Orvosi felügyelet"],
 };
 
+// Application areas (no partner logos on the brand site — repurposed marquee)
 export const logos = [
-  "BioNexus",
-  "GenomaLabs",
-  "CultureWorks",
-  "HelixCore",
-  "VivaBiotics",
-  "NordHealth",
-  "AxialBio",
-  "StrataDx",
+  "C. difficile fertőzés",
+  "IBS / IBD",
+  "Diszbiózis",
+  "Parkinson-kór",
+  "Autizmus / ADHD",
+  "Elhízás / cukorbetegség",
+  "Longevity",
+  "Sportteljesítmény",
 ];
 
 export const stats = [
-  { value: 1.2, suffix: "M+", label: "Samples banked", decimals: 1 },
-  { value: 48, suffix: "K", label: "Strains characterized", decimals: 0 },
-  { value: 600, suffix: "+", label: "Research partners", decimals: 0 },
-  { value: 99.99, suffix: "%", label: "Viability on recovery", decimals: 2 },
+  { value: 10, suffix: "+", label: "év tudományos kutatás", decimals: 0 },
+  { value: 6, suffix: "", label: "MTT kapszula-szolgáltatás", decimals: 0 },
+  { value: 72, suffix: " óra", label: "európai kiszállítás", decimals: 0 },
+  { value: 25, suffix: " év", label: "tárolás −15 °C-on", decimals: 0 },
 ];
 
 export const services = [
   {
-    icon: "vault",
-    title: "Sample Banking & Cryopreservation",
-    body: "Redundant −196 °C vapor-phase storage with 24/7 monitoring and full chain-of-custody for every aliquot.",
+    icon: "shield",
+    title: "DiffBiome",
+    body: "Visszatérő, antibiotikum-rezisztens Clostridioides difficile fertőzés otthoni kezeléséhez. (30 kapszula)",
   },
   {
-    icon: "microscope",
-    title: "Strain Isolation & Characterization",
-    body: "Anaerobic culturing, purity QC and phenotyping to turn raw samples into reference-grade, citable strains.",
+    icon: "vault",
+    title: "HospBiome",
+    body: "Súlyos, C. difficile okozta bakteriális fertőzés kórházi kezelése céljából. (5 kapszula)",
   },
   {
     icon: "dna",
-    title: "Genomic Sequencing & Data",
-    body: "Whole-genome and metagenomic sequencing, assembled, annotated and delivered as structured, queryable data.",
+    title: "TransferBiome",
+    body: "Krónikus gyulladásos bélbetegségek és diszbiózishoz köthető állapotok kezeléséhez. (60 kapszula)",
   },
   {
-    icon: "shield",
-    title: "Secure Access & Compliance",
-    body: "Consent-aware governance, MTA workflows and audit trails that satisfy IRB, GDPR and HIPAA requirements.",
+    icon: "microscope",
+    title: "FindBiome",
+    body: "Donor–recipiens kompatibilitás tesztelése a leghatékonyabb sarzs kiválasztásához. (4×15 kapszula)",
+  },
+  {
+    icon: "snow",
+    title: "AutoBiome",
+    body: "Saját mikrobióta tárolása későbbi felhasználásra — −15 °C-on akár 25 évig. (min. 600 kapszula)",
+  },
+  {
+    icon: "spark",
+    title: "UltraBiome",
+    body: "Ultrasportolóktól származó humán mikrobióta a fizikai teljesítmény és állóképesség növelésére. (30 kapszula)",
   },
 ];
 
 export const process = [
   {
     step: "01",
-    title: "Submit",
-    body: "Ship samples with our pre-validated kits and cold-chain logistics, or transfer an existing collection.",
+    title: "Konzultáció",
+    body: "A kezelőorvos felméri az állapotot és kiválasztja a megfelelő MTT-protokollt — a besorolást mindig orvos végzi.",
   },
   {
     step: "02",
-    title: "Preserve",
-    body: "We aliquot, barcode and cryopreserve under redundant monitoring within hours of intake.",
+    title: "Donor-szűrés",
+    body: "Többlépcsős, a lappangási idővel is számoló szűrési protokoll garantálja a páciensek maximális biztonságát.",
   },
   {
     step: "03",
-    title: "Characterize",
-    body: "Each strain is cultured, QC'd and sequenced, then enriched with phenotype and provenance metadata.",
+    title: "Kapszula",
+    body: "Liofilizált, sarzsonként egyedi humán mikrobióta-mátrix, betegazonosítóhoz rendelt készletből.",
   },
   {
     step: "04",
-    title: "Access",
-    body: "Search, request and release material on demand through the portal or programmatically via the API.",
+    title: "Kúra és követés",
+    body: "Otthoni vagy kórházi kúra orvosi felügyelettel, a kezelés céljához és tartamához igazítva.",
   },
 ];
 
 export const platform = {
-  eyebrow: "The platform",
-  title: "A digital twin for your living collection",
-  body: "Every physical vial has a real-time record — location, viability, passage history and genomics — so your team can reason about the collection without ever opening a freezer.",
+  eyebrow: "A háttér",
+  title: "Kutatás, tapasztalat és tudás minden kapszulában",
+  body: "2016 óta kutatjuk és finomítjuk a mikrobióta-transzfer módszertanát. Európában egyedüliként biztosítunk liofilizált humán mikrobiótát klinikai kísérletekhez és sportegészségügyi kutatásokhoz.",
   points: [
-    "Real-time inventory across every site and freezer",
-    "Genomics, phenotype and provenance on one record",
-    "Programmatic access with a documented REST & GraphQL API",
-    "Role-based governance with complete audit history",
+    "Európában egyedülálló liofilizált humán mikrobióta",
+    "72 órán belüli kiszállítás európai intézményekbe",
+    "Dynamap-alapú humán és állati mikrobióma-meghatározás",
+    "Szigorú, többlépcsős donor-szűrési protokoll",
   ],
 };
 
 export const bento = [
   {
-    title: "ISO 20387 accredited",
-    body: "Independently audited biobanking quality management end to end.",
-    icon: "badge",
+    title: "Biztonság mindenek felett",
+    body: "A számunkra előírtnál szigorúbb, a lappangási idővel is számoló, többlépcsős donor-szűrés.",
+    icon: "shield",
     span: "md:col-span-2",
   },
   {
-    title: "Redundant cold chain",
-    body: "Dual-site −196 °C storage with backup power and live telemetry.",
+    title: "Liofilizált stabilitás",
+    body: "Sarzsonként egyedi készítmény, −15 °C-on akár 25 évig stabilan tárolható.",
     icon: "snow",
     span: "",
   },
   {
-    title: "Global logistics",
-    body: "Validated dry-shipper network reaching 60+ countries.",
+    title: "Európai lefedettség",
+    body: "72 órán belül bármely európai egészségügyi intézménybe eljuttatjuk.",
     icon: "globe",
     span: "",
   },
   {
-    title: "API-first by design",
-    body: "Automate submission, search and release from your own stack.",
+    title: "Dynamap mikrobióma-meghatározás",
+    body: "Humán és állati mikrobióma-profil korszerű, Dynamap-technológián alapuló módszerrel.",
     icon: "code",
     span: "md:col-span-2",
   },
@@ -137,39 +148,40 @@ export const bento = [
 export const testimonials = [
   {
     quote:
-      "MicrobiomeBank gave us a single source of truth for 12,000 isolates. What used to take a week of freezer archaeology now takes one query.",
-    name: "Dr. Lena Hofstadter",
-    role: "Director of Microbial Genomics, BioNexus",
+      "Laborvezetőként feladatom a legújabb mikrobiológiai technológiák biztonságos bevezetése, hogy az általunk ellátott intézmények a legmagasabb minőségű és legbiztonságosabb szolgáltatást nyújthassák.",
+    name: "Dr. Bezzegh Attila",
+    role: "Orvos igazgató, orvos-mikrobiológus",
   },
   {
     quote:
-      "Recovery viability has been flawless across three years of draws. Their chain-of-custody documentation sailed through our audit.",
-    name: "Marcus Adeyemi",
-    role: "Head of Biobank Operations, HelixCore",
+      "Elsődlegesen a mikrobióta-transzfert intézményekben végző kollégák szakmai támogatása a feladatom, valamint a kezelések alatt fellépő tünetek elkülönítése.",
+    name: "Dr. Patay Gábor",
+    role: "Mikrobióta-specialista, orvos",
   },
 ];
 
 export const cta = {
-  title: "Ready to future-proof your collection?",
-  body: "Talk to our scientific team about onboarding your samples or accessing the bank.",
-  primary: { label: "Book a consult", href: "#contact" },
-  secondary: { label: "Email us", href: "mailto:info@microbiomebank.com" },
+  title: "Kérdése van a megfelelő terápiáról?",
+  body: "Írjon nekünk, és együtt megtaláljuk az Ön számára legmegfelelőbb MTT-megoldást. Levelére a lehető legrövidebb időn belül válaszolunk.",
+  primary: { label: "Kapcsolatfelvétel", href: "#contact" },
+  secondary: { label: "info@microbiomebank.com", href: "mailto:info@microbiomebank.com" },
 };
 
 export const footer = {
-  blurb: "Preserving and mobilizing the microbiome for the next era of life science.",
+  blurb:
+    "Egészséges bélflóra helyreállítása orvosi felügyelettel — a mikrobióta-transzfer terápia szakértője 2016 óta.",
   columns: [
     {
-      title: "Platform",
-      links: ["Inventory", "Genomics", "API", "Governance"],
+      title: "Kapszulák",
+      links: ["DiffBiome", "HospBiome", "TransferBiome", "FindBiome", "AutoBiome", "UltraBiome"],
     },
     {
-      title: "Services",
-      links: ["Banking", "Sequencing", "Characterization", "Logistics"],
+      title: "MicroBiome Bank",
+      links: ["Mikrobióta vizsgálat", "Donoroknak", "Csapatunk", "Blog"],
     },
     {
-      title: "Company",
-      links: ["About", "Careers", "Press", "Contact"],
+      title: "Kapcsolat",
+      links: ["info@microbiomebank.com", "+36 30 013 5000", "Budapest, Ménesi út 104.", "Braintree, Essex (UK)"],
     },
   ],
 };

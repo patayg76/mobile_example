@@ -7,14 +7,14 @@ export function Services() {
     <section id="services" className="mx-auto max-w-7xl scroll-mt-20 px-5 py-20 sm:px-8">
       <Reveal className="max-w-2xl">
         <span className="font-mono text-xs uppercase tracking-widest text-accent">
-          What we do
+          Kapszuláink
         </span>
         <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-          End-to-end care for living material
+          MTT kapszula-szolgáltatások
         </h2>
         <p className="mt-4 text-lg text-ink-soft">
-          From intake to recovery, every step is instrumented, documented and
-          built to keep your strains viable and citable.
+          Minden összetétel sarzsonként egyedi és megismételhetetlen — a
+          felhasználás céljához és a kezelés várható tartamához igazítva.
         </p>
       </Reveal>
 

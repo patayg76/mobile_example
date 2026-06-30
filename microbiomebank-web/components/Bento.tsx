@@ -8,10 +8,10 @@ export function Bento() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal className="max-w-2xl">
           <span className="font-mono text-xs uppercase tracking-widest text-accent">
-            Why MicrobiomeBank
+            Miért a MicroBiome Bank
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Infrastructure you can trust your collection to
+            Amire bízhatja az egészségét
           </h2>
         </Reveal>
 

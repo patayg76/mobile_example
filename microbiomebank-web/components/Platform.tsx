@@ -40,17 +40,17 @@ export function Platform() {
                 <span className="h-3 w-3 rounded-full bg-line" />
                 <span className="h-3 w-3 rounded-full bg-line" />
                 <span className="ml-3 font-mono text-xs text-ink-soft">
-                  bank.microbiomebank.com
+                  microbiomebank.com
                 </span>
               </div>
               <div className="space-y-4 p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-xs text-ink-soft">VIABILITY</div>
-                    <div className="text-2xl font-bold text-gradient">99.99%</div>
+                    <div className="font-mono text-xs text-ink-soft">DIVERZITÁS-INDEX</div>
+                    <div className="text-2xl font-bold text-gradient">magas</div>
                   </div>
                   <span className="rounded-full bg-accent/12 px-3 py-1 font-mono text-xs text-accent">
-                    ● live
+                    ● élő
                   </span>
                 </div>
                 {/* animated equalizer bars */}
@@ -65,9 +65,9 @@ export function Platform() {
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    ["Freezers", "24"],
-                    ["Strains", "48K"],
-                    ["Requests", "312"],
+                    ["Törzsek", "1200+"],
+                    ["Sarzs", "egyedi"],
+                    ["Kiszállítás", "72 ó"],
                   ].map(([k, v]) => (
                     <div key={k} className="rounded-xl border border-line/70 p-3">
                       <div className="font-mono text-[10px] uppercase text-ink-soft">

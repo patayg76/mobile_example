@@ -7,10 +7,10 @@ export function Process() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal className="max-w-2xl">
           <span className="font-mono text-xs uppercase tracking-widest text-accent">
-            How it works
+            A folyamat
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Four steps from sample to science
+            Négy lépés a gyógyulásig
           </h2>
         </Reveal>
 

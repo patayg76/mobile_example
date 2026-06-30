@@ -156,7 +156,7 @@ export function BioVisual({ className = "" }: { className?: string }) {
           letterSpacing="0.12em"
           fill="var(--color-ink-soft)"
         >
-          STRAIN DIVERSITY
+TÖRZSDIVERZITÁS
         </text>
       </g>
     </svg>

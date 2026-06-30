@@ -7,27 +7,27 @@
    ============================================================ */
 @theme {
   /* Surfaces */
-  --color-bg: #f7f4e9;       /* warm clinical cream (page) */
+  --color-bg: #f3f1ea;       /* warm brand cream (page) */
   --color-surface: #ffffff;  /* clean white cards */
-  --color-muted: #eef1e4;    /* soft sage hover */
+  --color-muted: #e9ece2;    /* soft sage hover */
 
   /* Ink (text) */
-  --color-ink: #173b22;      /* deep forest-green text */
-  --color-ink-soft: #566a54; /* muted sage-gray */
+  --color-ink: #1b2a20;      /* deep green-ink text */
+  --color-ink-soft: #586a5f; /* muted sage-gray */
 
-  /* Brand */
-  --color-primary: #3f9152;  /* medical green */
-  --color-secondary: #1f5130;/* forest green */
-  --color-accent: #2e7d43;   /* accent green (eyebrows) */
-  --color-lime: #6cbb7c;     /* life green highlight */
-  --color-glow: #9ad3a6;     /* soft glow green */
-  --color-line: #e4dfca;     /* tan-cream hairline */
+  /* Brand — teal-green from microbiomebank.com (#16787E) + MBB greens */
+  --color-primary: #16787e;  /* brand teal-green */
+  --color-secondary: #1e3d2a;/* dark MBB green */
+  --color-accent: #2d7a4f;   /* MBB green (eyebrows) */
+  --color-lime: #46a07a;     /* teal-green highlight */
+  --color-glow: #8fcab0;     /* soft glow */
+  --color-line: #e2ddca;     /* warm hairline */
   --color-flag: #e5402f;     /* "red flag" alert accent */
   --color-gold: #c8a23c;     /* gold divider accent */
 
   /* Deep (hero / CTA / dark bands) */
-  --color-deep: #133a21;     /* deepest forest */
-  --color-deep-2: #1f5130;   /* forest */
+  --color-deep: #14302a;     /* deepest teal-green */
+  --color-deep-2: #1e3d2a;   /* dark MBB green */
 
   /* Fonts (wired up in layout.tsx via next/font) */
   --font-display: var(--font-display-sans), system-ui, sans-serif;

@@ -18,11 +18,11 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: `${site.name} — ${site.tagline}`,
   description:
-    "MicrobiomeBank securely preserves, sequences and distributes microbial strains and samples for the global research community.",
+    "Mikrobióta-transzfer terápia (MTT) FMT kapszulával. Teljes értékű, kivizsgált donoroktól származó humán baktérium-mátrix — könnyű, biztonságos, kézenfekvő.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#133a21",
+  themeColor: "#14302a",
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${displaySans.variable} ${robotoMono.variable}`}>
+    <html lang="hu" className={`${displaySans.variable} ${robotoMono.variable}`}>
       <body className="min-h-screen">{children}</body>
     </html>
   );
