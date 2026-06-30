@@ -1,15 +1,15 @@
 # MicrobiomeBank — website redesign
 
-A fresh, professional, **fast** marketing site for MicrobiomeBank, built with a
-biomimetic / "Organic 2.0" design language: cellular shapes, breathing motion,
-bioluminescent DNA-blue + life-green palette, and lots of small, quick animated
-elements that stay cheap on the GPU.
+A fresh, professional, **fast** marketing site for MicrobiomeBank with a clean
+clinical design language: a forest-green + cream brand palette (taken from the
+company's own medical infographics), cellular shapes, breathing motion, and lots
+of small, quick animated elements that stay cheap on the GPU.
 
 ## Stack
 
 - **Next.js 16** (App Router) + **React 19** — statically prerendered (`○ Static`)
 - **Tailwind CSS v4** — tokens defined in `app/globals.css`
-- **next/font** — Exo (display) + Roboto Mono (data/labels), self-hosted, zero render-blocking requests
+- **next/font** — Plus Jakarta Sans (display) + Roboto Mono (data/labels), self-hosted, zero render-blocking requests
 - Animations are **pure CSS** (transform/opacity only). The only client JS is a
   ~1KB `IntersectionObserver` reveal wrapper and a count-up `Counter` — no
   animation library. `prefers-reduced-motion` is fully respected.

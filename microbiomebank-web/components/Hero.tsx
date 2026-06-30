@@ -9,7 +9,7 @@ export function Hero() {
       className="relative isolate overflow-hidden bg-deep text-white"
     >
       {/* animated gradient mesh */}
-      <div className="anim-gradient absolute inset-0 -z-10 opacity-90 [background:radial-gradient(60%_50%_at_15%_10%,rgba(34,211,238,0.28),transparent),radial-gradient(55%_55%_at_85%_20%,rgba(16,185,129,0.22),transparent),radial-gradient(70%_60%_at_50%_100%,rgba(14,165,233,0.3),transparent),linear-gradient(180deg,#041f33,#0a3a5c)]" />
+      <div className="anim-gradient absolute inset-0 -z-10 opacity-90 [background:radial-gradient(60%_50%_at_15%_10%,rgba(154,211,166,0.26),transparent),radial-gradient(55%_55%_at_85%_20%,rgba(108,187,124,0.22),transparent),radial-gradient(70%_60%_at_50%_100%,rgba(63,145,82,0.32),transparent),linear-gradient(180deg,#0e2f1a,#1f5130)]" />
       {/* morphing blobs */}
       <div className="anim-morph anim-breathe absolute -left-24 top-24 -z-10 h-80 w-80 bg-glow/20 blur-2xl" />
       <div className="anim-morph absolute -right-16 bottom-0 -z-10 h-96 w-96 bg-accent/20 blur-2xl [animation-delay:3s]" />
@@ -27,7 +27,7 @@ export function Hero() {
 
           <h1 className="mt-6 max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
             {hero.titleLead}{" "}
-            <span className="text-gradient">{hero.titleGradient}</span>.
+            <span className="text-gradient-light">{hero.titleGradient}</span>.
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
@@ -71,7 +71,7 @@ export function Hero() {
             {[0, 72, 144, 216, 288].map((deg) => (
               <span
                 key={deg}
-                className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-glow shadow-[0_0_16px_4px_rgba(34,211,238,0.6)]"
+                className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-glow shadow-[0_0_16px_4px_rgba(154,211,166,0.6)]"
                 style={{
                   transform: `rotate(${deg}deg) translateX(170px) rotate(-${deg}deg)`,
                 }}
@@ -82,14 +82,14 @@ export function Hero() {
             {[36, 108, 180, 252, 324].map((deg) => (
               <span
                 key={deg}
-                className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_14px_3px_rgba(16,185,129,0.6)]"
+                className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_14px_3px_rgba(108,187,124,0.6)]"
                 style={{
                   transform: `rotate(${deg}deg) translateX(120px) rotate(-${deg}deg)`,
                 }}
               />
             ))}
           </div>
-          <div className="anim-breathe relative grid h-40 w-40 place-items-center rounded-full bg-gradient-to-br from-primary to-accent shadow-[0_0_60px_-10px_rgba(34,211,238,0.8)]">
+          <div className="anim-breathe relative grid h-40 w-40 place-items-center rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0_0_60px_-10px_rgba(108,187,124,0.85)]">
             <Icons.dna className="h-20 w-20 text-white/90" strokeWidth={1.3} />
           </div>
         </div>

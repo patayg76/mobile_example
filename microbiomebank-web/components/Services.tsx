@@ -25,7 +25,7 @@ export function Services() {
             <Reveal
               key={s.title}
               delay={i * 80}
-              className="group relative flex h-full flex-col rounded-2xl border border-line/70 bg-surface p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-[0_24px_50px_-24px_rgba(14,165,233,0.5)]"
+              className="group relative flex h-full flex-col rounded-2xl border border-line/70 bg-surface p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-[0_24px_50px_-24px_rgba(63,145,82,0.45)]"
             >
               <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-primary transition-colors group-hover:from-primary group-hover:to-accent group-hover:text-white">
                 <Glyph className="h-6 w-6" />

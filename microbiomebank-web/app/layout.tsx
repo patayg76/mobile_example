@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Exo, Roboto_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/content";
 
-const exo = Exo({
-  variable: "--font-exo",
+const displaySans = Plus_Jakarta_Sans({
+  variable: "--font-display-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#041f33",
+  themeColor: "#133a21",
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${exo.variable} ${robotoMono.variable}`}>
+    <html lang="en" className={`${displaySans.variable} ${robotoMono.variable}`}>
       <body className="min-h-screen">{children}</body>
     </html>
   );

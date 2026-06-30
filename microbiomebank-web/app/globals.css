@@ -2,32 +2,35 @@
 
 /* ============================================================
    MicrobiomeBank — Design tokens
-   Style: Biomimetic / Organic 2.0  ·  DNA-blue + life-green
+   Style: Professional clinical  ·  Forest-green + cream
+   Palette derived from the brand's medical infographics.
    ============================================================ */
 @theme {
   /* Surfaces */
-  --color-bg: #f0f9ff;
-  --color-surface: #ffffff;
-  --color-muted: #e8f2f8;
+  --color-bg: #f7f4e9;       /* warm clinical cream (page) */
+  --color-surface: #ffffff;  /* clean white cards */
+  --color-muted: #eef1e4;    /* soft sage hover */
 
   /* Ink (text) */
-  --color-ink: #0c4a6e;
-  --color-ink-soft: #335e7c;
+  --color-ink: #173b22;      /* deep forest-green text */
+  --color-ink-soft: #566a54; /* muted sage-gray */
 
   /* Brand */
-  --color-primary: #0ea5e9;
-  --color-secondary: #0284c7;
-  --color-accent: #059669;
-  --color-lime: #10b981;
-  --color-glow: #22d3ee;
-  --color-line: #bae6fd;
+  --color-primary: #3f9152;  /* medical green */
+  --color-secondary: #1f5130;/* forest green */
+  --color-accent: #2e7d43;   /* accent green (eyebrows) */
+  --color-lime: #6cbb7c;     /* life green highlight */
+  --color-glow: #9ad3a6;     /* soft glow green */
+  --color-line: #e4dfca;     /* tan-cream hairline */
+  --color-flag: #e5402f;     /* "red flag" alert accent */
+  --color-gold: #c8a23c;     /* gold divider accent */
 
-  /* Deep (hero / footer) */
-  --color-deep: #041f33;
-  --color-deep-2: #0a3a5c;
+  /* Deep (hero / CTA / dark bands) */
+  --color-deep: #133a21;     /* deepest forest */
+  --color-deep-2: #1f5130;   /* forest */
 
   /* Fonts (wired up in layout.tsx via next/font) */
-  --font-display: var(--font-exo), system-ui, sans-serif;
+  --font-display: var(--font-display-sans), system-ui, sans-serif;
   --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
 
   /* Motion */
@@ -48,7 +51,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  background: color-mix(in oklab, var(--color-primary) 28%, transparent);
   color: var(--color-deep);
 }
 
@@ -103,6 +106,27 @@ body {
   animation: gradient-pan 9s var(--ease-organic) infinite;
 }
 
+/* Animated underline for nav links (grows from the left on hover) */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.35rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-lime));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-organic);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
 /* Scroll-reveal — toggled by <Reveal> via IntersectionObserver */
 .reveal {
   opacity: 0;
@@ -136,14 +160,30 @@ body {
   animation: shimmer 0.9s var(--ease-organic);
 }
 
-/* Animated gradient text */
+/* Animated gradient text — readable on light (cream) surfaces */
 .text-gradient {
   background: linear-gradient(
     100deg,
+    var(--color-secondary),
     var(--color-primary),
     var(--color-accent),
-    var(--color-glow),
-    var(--color-primary)
+    var(--color-secondary)
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s linear infinite;
+}
+
+/* Animated gradient text — for use on the deep-green hero band */
+.text-gradient-light {
+  background: linear-gradient(
+    100deg,
+    #eafbe8,
+    var(--color-lime),
+    #d8f1d9,
+    #eafbe8
   );
   background-size: 220% auto;
   -webkit-background-clip: text;

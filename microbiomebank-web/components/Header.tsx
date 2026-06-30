@@ -48,7 +48,7 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-muted hover:text-ink"
+              className="link-underline rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-ink"
             >
               {item.label}
             </a>

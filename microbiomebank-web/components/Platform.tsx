@@ -34,7 +34,7 @@ export function Platform() {
         <Reveal delay={120}>
           <div className="relative">
             <div className="anim-morph absolute -inset-6 -z-10 bg-gradient-to-br from-primary/15 to-accent/15 blur-xl" />
-            <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-[0_30px_70px_-30px_rgba(12,74,110,0.4)]">
+            <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-[0_30px_70px_-30px_rgba(19,58,33,0.38)]">
               <div className="flex items-center gap-2 border-b border-line/70 bg-bg/60 px-4 py-3">
                 <span className="h-3 w-3 rounded-full bg-line" />
                 <span className="h-3 w-3 rounded-full bg-line" />
