@@ -4,24 +4,22 @@ import { Reveal } from "./Reveal";
 
 export function Platform() {
   return (
-    <section id="platform" className="mx-auto max-w-7xl scroll-mt-20 px-5 py-20 sm:px-8">
-      <div className="grid items-center gap-12 lg:grid-cols-2">
+    <section id="platform" className="scroll-mt-20 bg-surface py-24 lg:py-28">
+      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2">
         <Reveal>
-          <span className="font-mono text-xs uppercase tracking-widest text-accent">
-            {platform.eyebrow}
-          </span>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+          <span className="eyebrow">{platform.eyebrow}</span>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-secondary sm:text-5xl">
             {platform.title}
           </h2>
-          <p className="mt-4 text-lg text-ink-soft">{platform.body}</p>
-          <ul className="mt-7 space-y-3">
+          <p className="mt-5 text-lg leading-relaxed text-ink-soft">{platform.body}</p>
+          <ul className="mt-8 space-y-4">
             {platform.points.map((point, i) => (
               <li
                 key={point}
-                className="reveal is-in flex items-start gap-3"
+                className="reveal is-in flex items-start gap-3.5"
                 style={{ transitionDelay: `${i * 90}ms` }}
               >
-                <span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-accent/12 text-accent">
+                <span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-primary/12 text-primary">
                   <Icons.check className="h-4 w-4" />
                 </span>
                 <span className="text-ink">{point}</span>
@@ -33,9 +31,9 @@ export function Platform() {
         {/* mock dashboard card */}
         <Reveal delay={120}>
           <div className="relative">
-            <div className="anim-morph absolute -inset-6 -z-10 bg-gradient-to-br from-primary/15 to-accent/15 blur-xl" />
-            <div className="overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-[0_30px_70px_-30px_rgba(19,58,33,0.38)]">
-              <div className="flex items-center gap-2 border-b border-line/70 bg-bg/60 px-4 py-3">
+            <span className="glow left-[10%] top-[6%] -z-10 h-64 w-64 bg-[color-mix(in_oklab,var(--color-primary)_45%,transparent)] opacity-25" />
+            <div className="card overflow-hidden p-0">
+              <div className="flex items-center gap-2 border-b border-line/70 bg-bg/50 px-4 py-3">
                 <span className="h-3 w-3 rounded-full bg-line" />
                 <span className="h-3 w-3 rounded-full bg-line" />
                 <span className="h-3 w-3 rounded-full bg-line" />
@@ -43,22 +41,26 @@ export function Platform() {
                   microbiomebank.com
                 </span>
               </div>
-              <div className="space-y-4 p-5">
+              <div className="space-y-4 p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-xs text-ink-soft">DIVERZITÁS-INDEX</div>
-                    <div className="text-2xl font-bold text-gradient">magas</div>
+                    <div className="font-mono text-xs uppercase tracking-widest text-ink-soft">
+                      Diverzitás-index
+                    </div>
+                    <div className="mt-1 font-display text-3xl font-semibold text-gradient">
+                      magas
+                    </div>
                   </div>
-                  <span className="rounded-full bg-accent/12 px-3 py-1 font-mono text-xs text-accent">
-                    ● élő
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" /> élő
                   </span>
                 </div>
-                {/* animated equalizer bars */}
-                <div className="flex h-24 items-end gap-1.5 rounded-xl bg-bg/70 p-3">
+                {/* animated diversity bars */}
+                <div className="flex h-28 items-end gap-1.5 rounded-2xl bg-bg/60 p-3">
                   {[40, 62, 48, 75, 58, 88, 66, 95, 72, 84, 60, 78].map((h, i) => (
                     <span
                       key={i}
-                      className="anim-bob flex-1 rounded-sm bg-gradient-to-t from-primary to-glow"
+                      className="anim-bob flex-1 rounded-sm bg-gradient-to-t from-primary to-lime"
                       style={{ height: `${h}%`, animationDelay: `${i * 0.12}s` }}
                     />
                   ))}
@@ -69,11 +71,13 @@ export function Platform() {
                     ["Sarzs", "egyedi"],
                     ["Kiszállítás", "72 ó"],
                   ].map(([k, v]) => (
-                    <div key={k} className="rounded-xl border border-line/70 p-3">
-                      <div className="font-mono text-[10px] uppercase text-ink-soft">
+                    <div key={k} className="rounded-xl border border-line/70 bg-surface p-3">
+                      <div className="font-mono text-[10px] uppercase tracking-wider text-ink-soft">
                         {k}
                       </div>
-                      <div className="mt-1 text-lg font-semibold">{v}</div>
+                      <div className="mt-1 font-display text-lg font-semibold text-secondary">
+                        {v}
+                      </div>
                     </div>
                   ))}
                 </div>

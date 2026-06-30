@@ -31,10 +31,12 @@
 
   /* Fonts (wired up in layout.tsx via next/font) */
   --font-display: var(--font-display-sans), system-ui, sans-serif;
+  --font-body: var(--font-body-sans), system-ui, sans-serif;
   --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
 
   /* Motion */
   --ease-organic: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --breathe: 5s;
 }
 
@@ -45,9 +47,16 @@ html {
 body {
   background: var(--color-bg);
   color: var(--color-ink);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+/* Headings use the display face, tight and confident */
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
 }
 
 ::selection {
@@ -226,6 +235,105 @@ body {
   background-size: 44px 44px;
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 75%);
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 75%);
+}
+
+/* ============================================================
+   Premium surface layer — depth, glow, grain, cards
+   ============================================================ */
+
+/* Section eyebrow: mono micro-label with a short marker line */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.6rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-primary), transparent);
+}
+
+/* Premium card — layered shadow, hairline, gradient sheen on hover */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff, color-mix(in oklab, var(--color-bg) 55%, #ffffff));
+  border: 1px solid color-mix(in oklab, var(--color-line) 80%, transparent);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.7) inset,
+    0 1px 2px rgba(20, 48, 42, 0.04),
+    0 18px 40px -28px rgba(20, 48, 42, 0.22);
+  transition:
+    transform 0.4s var(--ease-spring),
+    box-shadow 0.4s var(--ease-spring),
+    border-color 0.4s var(--ease-spring);
+  will-change: transform;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.8) inset,
+    0 30px 60px -30px rgba(22, 120, 126, 0.35);
+}
+/* gradient top-edge that lights up on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-primary) 60%, transparent), transparent);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-spring);
+}
+.card:hover::after { opacity: 1; }
+
+/* Tinted icon tile */
+.icon-tile {
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  background: linear-gradient(160deg, color-mix(in oklab, var(--color-primary) 16%, #fff), color-mix(in oklab, var(--color-accent) 12%, #fff));
+  border: 1px solid color-mix(in oklab, var(--color-primary) 22%, transparent);
+  color: var(--color-primary);
+  box-shadow: 0 8px 20px -12px rgba(22, 120, 126, 0.5);
+}
+
+/* Soft radial glow blobs (decorative, animated drift) */
+@keyframes glow-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(3%, -4%, 0) scale(1.08); }
+}
+.glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  pointer-events: none;
+  animation: glow-drift 16s var(--ease-organic) infinite;
+}
+
+/* Fine film grain for premium texture (very subtle) */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* Gradient hairline divider */
+.rule-gradient {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-primary) 45%, transparent), transparent);
 }
 
 /* ============================================================

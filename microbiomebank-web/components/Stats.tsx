@@ -4,24 +4,28 @@ import { Reveal } from "./Reveal";
 
 export function Stats() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-      <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line/70 bg-line/50 lg:grid-cols-4">
+    <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
+      <Reveal className="card grid grid-cols-2 gap-y-10 px-6 py-10 sm:px-10 lg:grid-cols-4">
         {stats.map((s, i) => (
-          <Reveal
+          <div
             key={s.label}
-            delay={i * 90}
-            className="group relative bg-surface p-7 text-center sm:p-9"
+            className={`relative px-2 text-center lg:px-6 ${
+              i !== 0
+                ? "lg:before:absolute lg:before:inset-y-1 lg:before:left-0 lg:before:w-px lg:before:bg-line"
+                : ""
+            }`}
           >
-            <div className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-primary to-accent transition-transform duration-500 group-hover:scale-x-100" />
-            <div className="text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+            <div className="font-display text-4xl font-semibold tracking-tight text-secondary sm:text-5xl">
               <span className="text-gradient">
                 <Counter value={s.value} decimals={s.decimals} suffix={s.suffix} />
               </span>
             </div>
-            <div className="mt-2 text-sm font-medium text-ink-soft">{s.label}</div>
-          </Reveal>
+            <div className="mt-2 font-mono text-xs uppercase tracking-widest text-ink-soft">
+              {s.label}
+            </div>
+          </div>
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 }

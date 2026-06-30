@@ -1,10 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
+import { Sora, Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/content";
 
-const displaySans = Plus_Jakarta_Sans({
+const displaySans = Sora({
   variable: "--font-display-sans",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
+const bodySans = Inter({
+  variable: "--font-body-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -31,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="hu" className={`${displaySans.variable} ${robotoMono.variable}`}>
+    <html lang="hu" className={`${displaySans.variable} ${bodySans.variable} ${robotoMono.variable}`}>
       <body className="min-h-screen">{children}</body>
     </html>
   );
