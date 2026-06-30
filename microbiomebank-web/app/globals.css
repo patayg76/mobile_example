@@ -92,6 +92,20 @@ body {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-6px); }
 }
+/* Linear-style line "draw-in" for scientific SVG strokes */
+@keyframes draw-in {
+  to { stroke-dashoffset: 0; }
+}
+/* Gentle, slow drift for diagram nodes (subtle, premium) */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -7px, 0); }
+}
+/* Soft fade-up + scale for hero entrance (Apple-calm) */
+@keyframes enter-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* ============================================================
    Animation utilities
@@ -101,9 +115,21 @@ body {
 .anim-morph     { animation: morph 12s var(--ease-organic) infinite; }
 .anim-spin-slow { animation: spin-slow 28s linear infinite; }
 .anim-bob       { animation: bob 3.5s var(--ease-organic) infinite; }
+.anim-drift     { animation: drift 9s var(--ease-organic) infinite; }
 .anim-gradient  {
   background-size: 220% 220%;
   animation: gradient-pan 9s var(--ease-organic) infinite;
+}
+
+/* Stroke draw-in — pair with inline stroke-dasharray/offset on an SVG path */
+.anim-draw {
+  animation: draw-in 1.6s var(--ease-organic) forwards;
+}
+
+/* Staggered hero entrance — add anim-enter and an inline animation-delay */
+.anim-enter {
+  opacity: 0;
+  animation: enter-up 0.8s var(--ease-organic) forwards;
 }
 
 /* Animated underline for nav links (grows from the left on hover) */

@@ -1,102 +1,85 @@
 import { hero } from "@/lib/content";
 import { Icons } from "./icons";
-import { MicrobeField } from "./MicrobeField";
+import { BioVisual } from "./BioVisual";
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden bg-deep text-white"
+      className="relative isolate overflow-hidden bg-bg text-ink"
     >
-      {/* animated gradient mesh */}
-      <div className="anim-gradient absolute inset-0 -z-10 opacity-90 [background:radial-gradient(60%_50%_at_15%_10%,rgba(154,211,166,0.26),transparent),radial-gradient(55%_55%_at_85%_20%,rgba(108,187,124,0.22),transparent),radial-gradient(70%_60%_at_50%_100%,rgba(63,145,82,0.32),transparent),linear-gradient(180deg,#0e2f1a,#1f5130)]" />
-      {/* morphing blobs */}
-      <div className="anim-morph anim-breathe absolute -left-24 top-24 -z-10 h-80 w-80 bg-glow/20 blur-2xl" />
-      <div className="anim-morph absolute -right-16 bottom-0 -z-10 h-96 w-96 bg-accent/20 blur-2xl [animation-delay:3s]" />
-      <MicrobeField className="-z-10 opacity-70" />
+      {/* whisper-soft background: one faint radial wash + a masked science grid */}
+      <div className="absolute inset-0 -z-10 [background:radial-gradient(60%_50%_at_70%_8%,color-mix(in_oklab,var(--color-lime)_18%,transparent),transparent_70%)]" />
+      <div className="bio-grid absolute inset-0 -z-10 opacity-[0.5]" />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-24 pt-32 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-32 lg:pt-40">
+      <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 pb-24 pt-32 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:pb-32 lg:pt-40">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 font-mono text-xs uppercase tracking-widest text-glow backdrop-blur">
+          <span
+            className="anim-enter inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-xs uppercase tracking-widest text-accent backdrop-blur"
+            style={{ animationDelay: "0.05s" }}
+          >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full rounded-full bg-lime [animation:pulse-ring_1.8s_ease-out_infinite]" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
             {hero.eyebrow}
           </span>
 
-          <h1 className="mt-6 max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+          <h1
+            className="anim-enter mt-7 max-w-2xl text-[2.7rem] font-semibold leading-[1.04] tracking-[-0.02em] text-secondary sm:text-6xl lg:text-[4.1rem]"
+            style={{ animationDelay: "0.12s" }}
+          >
             {hero.titleLead}{" "}
-            <span className="text-gradient-light">{hero.titleGradient}</span>.
+            <span className="text-gradient">{hero.titleGradient}</span>.
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+          <p
+            className="anim-enter mt-6 max-w-xl text-lg leading-relaxed text-ink-soft"
+            style={{ animationDelay: "0.2s" }}
+          >
             {hero.sub}
           </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div
+            className="anim-enter mt-9 flex flex-col gap-3 sm:flex-row"
+            style={{ animationDelay: "0.28s" }}
+          >
             <a
               href={hero.ctaPrimary.href}
-              className="shimmer inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-deep transition-transform duration-200 hover:-translate-y-0.5"
+              className="shimmer inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-7 py-3.5 font-semibold text-white shadow-[0_10px_30px_-12px_rgba(31,81,48,0.7)] transition-transform duration-200 hover:-translate-y-0.5"
             >
               {hero.ctaPrimary.label}
               <Icons.arrow className="h-4 w-4" />
             </a>
             <a
               href={hero.ctaSecondary.href}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-3.5 font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-surface px-7 py-3.5 font-semibold text-ink transition-colors duration-200 hover:bg-muted"
             >
               {hero.ctaSecondary.label}
             </a>
           </div>
 
-          <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm text-white/60">
-            {hero.chips.map((chip, i) => (
-              <li
-                key={chip}
-                className="anim-bob flex items-center gap-2"
-                style={{ animationDelay: `${i * 0.4}s` }}
-              >
-                <Icons.check className="h-4 w-4 text-lime" />
+          <ul
+            className="anim-enter mt-10 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm text-ink-soft"
+            style={{ animationDelay: "0.36s" }}
+          >
+            {hero.chips.map((chip) => (
+              <li key={chip} className="flex items-center gap-2">
+                <Icons.check className="h-4 w-4 text-primary" />
                 {chip}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* orbiting cell visual */}
-        <div className="relative mx-auto hidden aspect-square w-full max-w-md place-items-center lg:grid">
-          <div className="anim-morph anim-breathe absolute inset-8 bg-gradient-to-br from-primary/40 to-accent/30 blur-md" />
-          <div className="absolute inset-0 anim-spin-slow">
-            {[0, 72, 144, 216, 288].map((deg) => (
-              <span
-                key={deg}
-                className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-glow shadow-[0_0_16px_4px_rgba(154,211,166,0.6)]"
-                style={{
-                  transform: `rotate(${deg}deg) translateX(170px) rotate(-${deg}deg)`,
-                }}
-              />
-            ))}
-          </div>
-          <div className="absolute inset-0 anim-spin-slow [animation-direction:reverse] [animation-duration:38s]">
-            {[36, 108, 180, 252, 324].map((deg) => (
-              <span
-                key={deg}
-                className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_14px_3px_rgba(108,187,124,0.6)]"
-                style={{
-                  transform: `rotate(${deg}deg) translateX(120px) rotate(-${deg}deg)`,
-                }}
-              />
-            ))}
-          </div>
-          <div className="anim-breathe relative grid h-40 w-40 place-items-center rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0_0_60px_-10px_rgba(108,187,124,0.85)]">
-            <Icons.dna className="h-20 w-20 text-white/90" strokeWidth={1.3} />
-          </div>
+        {/* scientific microbiology visual */}
+        <div
+          className="anim-enter relative mx-auto hidden w-full max-w-md lg:block"
+          style={{ animationDelay: "0.24s" }}
+        >
+          <BioVisual />
         </div>
       </div>
-
-      {/* fade into light body */}
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-bg" />
     </section>
   );
 }
