@@ -3,7 +3,7 @@
 import { createApi } from '../src/api.js';
 import { seed } from '../src/seed.js';
 
-const KEY = 'munkaero_demo_db_v1';
+const KEY = 'munkaero_demo_db_v2';
 let saved = null;
 try {
   saved = JSON.parse(localStorage.getItem(KEY));

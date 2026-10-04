@@ -5,6 +5,13 @@ import { PLACES } from './data/places.js';
 import { ATTRIBUTES, SCHEDULES, ROLES, PROVIDES_KIND } from './data/catalog.js';
 import { createMatcher } from './match.js';
 import { newId, randomHex } from './ids.js';
+import { REGISTERED_FARMS, normalizeTaxNumber } from './data/farms.js';
+
+// Fióktípusok: munkát kínálni csak regisztrált gazdaság, keresni csak magánszemély tud.
+export const ACCOUNT_TYPES = {
+  gazdasag: { name: 'Gazdaság', role: 'kinalo' },
+  maganszemely: { name: 'Magánszemély', role: 'kereso' },
+};
 
 export class HttpError extends Error {
   constructor(status, message) {
@@ -104,7 +111,7 @@ export function createApi({ store, hashPassword, verifyPassword }) {
       id: p.id,
       role: p.role,
       title: p.title,
-      ownerName: owner ? owner.name.split(' ').slice(0, 2).join(' ') : '',
+      ownerName: displayName(owner),
       jobs: p.jobs,
       place: p.place,
       placeName: placeName(p.place),
@@ -129,8 +136,21 @@ export function createApi({ store, hashPassword, verifyPassword }) {
     return p;
   }
 
+  // Gazdaságnál a gazdaság neve látszik, magánszemélynél a neve.
+  function displayName(u) {
+    if (!u) return '';
+    return u.accountType === 'gazdasag' && u.farm ? u.farm.name : u.name.split(' ').slice(0, 2).join(' ');
+  }
+
   function publicUser(u) {
-    return { id: u.id, name: u.name, email: u.email, phone: u.phone };
+    return { id: u.id, name: u.name, email: u.email, phone: u.phone, accountType: u.accountType, farm: u.farm || null };
+  }
+
+  function assertRoleAllowed(user, role) {
+    if (ACCOUNT_TYPES[user.accountType]?.role === role) return;
+    throw new HttpError(403, role === 'kinalo'
+      ? 'Munkát csak a Farmatlaszban regisztrált gazdaságok kínálhatnak.'
+      : 'Munkát magánszemélyként lehet keresni.');
   }
 
   function createSession(user) {
@@ -157,7 +177,8 @@ export function createApi({ store, hashPassword, verifyPassword }) {
       respondedAt: q.respondedAt,
       myProfile: outgoing ? from && { id: from.id, title: from.title } : to && { id: to.id, title: to.title },
       otherProfile: outgoing ? to && publicProfile(to, from) : from && publicProfile(from, to),
-      otherName: other?.name,
+      otherName: displayName(other),
+      otherContactPerson: q.status === 'elfogadva' && other?.accountType === 'gazdasag' ? other.name : null,
       contact: q.status === 'elfogadva' && other ? { email: other.email, phone: other.phone } : null,
     };
   }
@@ -179,7 +200,18 @@ export function createApi({ store, hashPassword, verifyPassword }) {
     if (!name || !/^\S+@\S+\.\S+$/.test(email)) throw new HttpError(400, 'Név és érvényes e-mail cím szükséges.');
     if (password.length < 6) throw new HttpError(400, 'A jelszó legalább 6 karakter legyen.');
     if (db.users.some((u) => u.email === email)) throw new HttpError(409, 'Ezzel az e-mail címmel már van fiók.');
-    const user = { id: newId('u'), name, email, phone: String(body.phone || '').trim(), passwordHash: hashPassword(password), createdAt: new Date().toISOString() };
+    const accountType = body.accountType;
+    if (!ACCOUNT_TYPES[accountType]) throw new HttpError(400, 'Válaszd ki, gazdaságként vagy magánszemélyként regisztrálsz.');
+    let farm = null;
+    if (accountType === 'gazdasag') {
+      // A gazdaságnak már szerepelnie kell a Farmatlasz nyilvántartásában.
+      const tax = normalizeTaxNumber(body.taxNumber);
+      const found = tax && REGISTERED_FARMS.find((f) => normalizeTaxNumber(f.taxNumber) === tax);
+      if (!found) throw new HttpError(400, 'Ezzel az adószámmal nincs regisztrált gazdaság a Farmatlaszban. Előbb a gazdaságot kell regisztrálni.');
+      if (db.users.some((u) => u.farm?.id === found.id)) throw new HttpError(409, 'Ehhez a gazdasághoz már tartozik fiók.');
+      farm = { ...found };
+    }
+    const user = { id: newId('u'), name, email, phone: String(body.phone || '').trim(), accountType, farm, passwordHash: hashPassword(password), createdAt: new Date().toISOString() };
     db.users.push(user);
     return createSession(user);
   }, { auth: false });
@@ -219,6 +251,7 @@ export function createApi({ store, hashPassword, verifyPassword }) {
   });
 
   route('POST', '/api/profiles', ({ body, user }) => {
+    assertRoleAllowed(user, body?.role);
     const p = { id: newId('p'), userId: user.id, createdAt: new Date().toISOString(), ...normalizeProfile(body, { strict: true }) };
     db.profiles.push(p);
     store.save();
@@ -229,6 +262,7 @@ export function createApi({ store, hashPassword, verifyPassword }) {
 
   route('PUT', '/api/profiles/:id', ({ params, body, user }) => {
     const p = ownProfile(user, params.id);
+    assertRoleAllowed(user, p.role);
     const next = normalizeProfile({ ...body, role: p.role }, { strict: true });
     for (const k of Object.keys(p)) if (!['id', 'userId', 'createdAt'].includes(k)) delete p[k];
     Object.assign(p, next, { updatedAt: new Date().toISOString() });
@@ -256,6 +290,7 @@ export function createApi({ store, hashPassword, verifyPassword }) {
 
   route('POST', '/api/inquiries', ({ body, user }) => {
     const from = ownProfile(user, body.fromProfileId);
+    assertRoleAllowed(user, from.role);
     const to = db.profiles.find((p) => p.id === body.toProfileId && p.active);
     if (!to || to.userId === user.id) throw new HttpError(404, 'A megkeresett hirdetés nem található.');
     if (!matcher.isMatch(from, to)) throw new HttpError(409, 'Ez a hirdetés már nem illeszkedik a tiédhez.');

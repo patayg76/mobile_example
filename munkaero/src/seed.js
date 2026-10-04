@@ -4,6 +4,7 @@ import { JOB_NODES } from './data/jobTree.js';
 import { PLACES } from './data/places.js';
 import { ATTRIBUTES, SCHEDULES } from './data/catalog.js';
 import { newId } from './ids.js';
+import { REGISTERED_FARMS } from './data/farms.js';
 
 function rng(seed) {
   let s = seed >>> 0;
@@ -33,8 +34,9 @@ export function seed(store, { hashPassword, year = new Date().getFullYear() }) {
   const placeName = (id) => PLACES.find((p) => p.id === id).name;
   const now = new Date().toISOString();
 
-  const mkUser = (name, email, password) => {
-    const u = { id: newId('u'), name, email, phone: `+36 30 ${between(100, 999, 1)} ${between(1000, 9999, 1)}`, passwordHash: password ? hashPassword(password) : null, createdAt: now };
+  // farm: gazdaság adatai (gazdaság-fióknál), különben magánszemély.
+  const mkUser = (name, email, password, farm = null) => {
+    const u = { id: newId('u'), name, email, accountType: farm ? 'gazdasag' : 'maganszemely', farm, phone: `+36 30 ${between(100, 999, 1)} ${between(1000, 9999, 1)}`, passwordHash: password ? hashPassword(password) : null, createdAt: now };
     store.db.users.push(u);
     return u;
   };
@@ -48,7 +50,9 @@ export function seed(store, { hashPassword, year = new Date().getFullYear() }) {
 
   // Gazdák
   for (let i = 0; i < 28; i++) {
-    const u = mkUser(`${pick(LAST)} ${pick(FIRST)} (gazda)`, `gazda${i}@pelda.hu`);
+    const owner = `${pick(LAST)} ${pick(FIRST)}`;
+    const farmName = pick([`${owner.split(' ')[0]} Családi Gazdaság`, `${owner.split(' ')[0]} és Társa Kft.`, `${owner} őstermelő`]);
+    const u = mkUser(owner, `gazda${i}@pelda.hu`, null, { id: `fa-gen-${i}`, name: farmName, taxNumber: `9${String(1000000 + i).slice(1)}0-2-11`, place: null });
     const jobs = [...new Set([pick(deepNodes).id, ...(r() < 0.3 ? [pick(deepNodes).id] : [])])];
     const place = pick(PLACES).id;
     const min = between(1900, 2600);
@@ -94,12 +98,14 @@ export function seed(store, { hashPassword, year = new Date().getFullYear() }) {
     ['Lengyel Kata', { role: 'kereso', title: 'Kata: szezonális kerti munka', jobs: ['gyumolcstermesztes'], place: 'nagykoros', radiusKm: 20, wage: { min: 2600, max: 3200 }, schedules: ['szezonalis', 'alkalmi'], provides: ['sajat_auto'], requires: [], birthYear: year - 35, experienceYears: 4 }],
   ];
   for (const [name, p] of near) {
-    const u = mkUser(name, `${p.title.split(':')[0].toLowerCase().replace(/\W+/g, '')}${store.db.users.length}@pelda.hu`);
+    const email = `${p.title.split(':')[0].toLowerCase().replace(/\W+/g, '')}${store.db.users.length}@pelda.hu`;
+    const farm = p.role === 'kinalo' ? { id: `fa-near-${store.db.users.length}`, name, taxNumber: '', place: p.place } : null;
+    const u = mkUser(farm ? `${pick(LAST)} ${pick(FIRST)}` : name, email, null, farm);
     store.db.profiles.push({ id: newId('p'), userId: u.id, active: true, createdAt: now, period: null, note: '', ...p });
   }
 
   // Belépésre használható bemutató fiókok
-  const gazda = mkUser('Demo Gazda', 'gazda@demo.hu', 'demo1234');
+  const gazda = mkUser('Demo Gazda', 'gazda@demo.hu', 'demo1234', { ...REGISTERED_FARMS.find((f) => f.id === 'fa-demo') });
   store.db.profiles.push({
     id: newId('p'), userId: gazda.id, role: 'kinalo', active: true, createdAt: now,
     title: 'Cseresznyeszedés – Nagykőrös', jobs: ['cseresznye-meggyszedes'], place: 'nagykoros', radiusKm: 30,

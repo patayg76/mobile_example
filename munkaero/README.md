@@ -26,6 +26,11 @@ fel (`data/db.json`). A bemutató fiókok: `gazda@demo.hu` és `munkas@demo.hu`,
 
 ## Hogyan működik
 
+0. **Két fióktípus.** **Munkát kínálni csak a Farmatlaszban már regisztrált gazdaság
+   tud.** A fiókot regisztrációkor az adószám alapján kapcsoljuk a gazdasághoz; a prototípusban
+   a nyilvántartást a `src/data/farms.js` helyettesíti. **Munkát keresni magánszemélyként** lehet.
+   A szerepkör a fióktípushoz kötött, ezt a szerver is ellenőrzi. A másik fél a gazdaság nevét
+   látja, a magánszemélynek pedig a nevét.
 1. **Munkafa** – a Farmatlasz termékfájának mintájára: *munkakategória › munkacsoport ›
    munkakör › feladat* (`src/data/jobTree.js`). Bármelyik szint bejelölhető. Egy csoport
    bejelölése mindent jelent, ami alatta van, vagyis tágabb halmazt. A fa minden eleme

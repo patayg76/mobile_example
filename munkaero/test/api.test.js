@@ -30,10 +30,15 @@ async function call(method, url, body, token) {
   return { status: res.status, data: await res.json() };
 }
 
-const register = async (name, email) => (await call('POST', '/api/register', { name, email, password: 'titok123', phone: '+36 30 111 2222' })).data.token;
+// Gazdaságként a Farmatlasz-nyilvántartásban szereplő adószámmal lehet regisztrálni (src/data/farms.js).
+const register = async (name, email, taxNumber) => {
+  const r = await call('POST', '/api/register', { name, email, password: 'titok123', phone: '+36 30 111 2222', accountType: taxNumber ? 'gazdasag' : 'maganszemely', taxNumber });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  return r.data.token;
+};
 
 test('teljes folyamat: hirdetés, élő előnézet, találat, megkeresés, elfogadás', async () => {
-  const gazda = await register('Teszt Gazda', 'g@teszt.hu');
+  const gazda = await register('Teszt Gazda', 'g@teszt.hu', '12345678-2-03');
   const munkas = await register('Teszt Munkás', 'm@teszt.hu');
 
   const offer = {
@@ -80,16 +85,19 @@ test('teljes folyamat: hirdetés, élő előnézet, találat, megkeresés, elfog
   // Csak a címzett válaszolhat
   const wrong = await call('POST', `/api/inquiries/${q.data.id}/respond`, { status: 'elfogadva' }, munkas);
   assert.equal(wrong.status, 404);
+  assert.equal(inbox.data[0].otherName, 'Teszt Munkás');
   const ok = await call('POST', `/api/inquiries/${q.data.id}/respond`, { status: 'elfogadva', reply: 'Várunk!' }, gazda);
   assert.equal(ok.data.contact.email, 'm@teszt.hu');
 
   const sent = await call('GET', '/api/inquiries', null, munkas);
   assert.equal(sent.data[0].contact.email, 'g@teszt.hu');
+  assert.equal(sent.data[0].otherName, 'Tiszamenti Zöldség Kft.');
+  assert.equal(sent.data[0].otherContactPerson, 'Teszt Gazda');
   assert.equal(sent.data[0].reply, 'Várunk!');
 });
 
 test('nem illeszkedő hirdetésnek nem lehet megkeresést küldeni, idegen hirdetés nem szerkeszthető', async () => {
-  const a = await register('A', 'a@teszt.hu');
+  const a = await register('A', 'a@teszt.hu', '23456789-2-05');
   const b = await register('B', 'b@teszt.hu');
   const pa = await call('POST', '/api/profiles', { role: 'kinalo', title: 'Szüret', jobs: ['szuret'], wage: { min: 2000, max: 2200 }, place: 'tokaj', radiusKm: 20 }, a);
   const pb = await call('POST', '/api/profiles', { role: 'kereso', title: 'Fejés', jobs: ['tehenfejes'], wage: { min: 2000, max: 2500 }, place: 'gyor', radiusKm: 20 }, b);
@@ -107,4 +115,23 @@ test('validáció: hibás bérsáv és hiányzó munka', async () => {
   assert.equal(r2.status, 400);
   const r3 = await call('GET', '/api/profiles');
   assert.equal(r3.status, 401);
+});
+
+test('fióktípusok: munkát csak regisztrált gazdaság kínálhat, keresni csak magánszemély tud', async () => {
+  const unknown = await call('POST', '/api/register', { name: 'X', email: 'x@teszt.hu', password: 'titok123', accountType: 'gazdasag', taxNumber: '99999999-9-99' });
+  assert.equal(unknown.status, 400);
+  const dupFarm = await call('POST', '/api/register', { name: 'Y', email: 'y@teszt.hu', password: 'titok123', accountType: 'gazdasag', taxNumber: '12345678203' });
+  assert.equal(dupFarm.status, 409, 'a Tiszamenti Zöldség Kft.-hez már tartozik fiók');
+  const noType = await call('POST', '/api/register', { name: 'Z', email: 'z@teszt.hu', password: 'titok123' });
+  assert.equal(noType.status, 400);
+
+  const person = await register('Magán Mária', 'mm@teszt.hu');
+  const farm = await register('Kovács Pál', 'kp@teszt.hu', '56789012-1-13');
+  const base = { title: 't', jobs: ['almaszedes'], wage: { min: 2000, max: 2500 }, place: 'cegled', radiusKm: 20 };
+  assert.equal((await call('POST', '/api/profiles', { ...base, role: 'kinalo' }, person)).status, 403);
+  assert.equal((await call('POST', '/api/profiles', { ...base, role: 'kereso' }, farm)).status, 403);
+  assert.equal((await call('POST', '/api/profiles', { ...base, role: 'kereso' }, person)).status, 200);
+  const me = await call('GET', '/api/me', null, farm);
+  assert.equal(me.data.accountType, 'gazdasag');
+  assert.equal(me.data.farm.name, 'Kovács Pál őstermelő');
 });

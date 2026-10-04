@@ -69,6 +69,10 @@ const attr = (id) => state.meta.attrById.get(id);
 const placeName = (id) => state.meta.places.find((p) => p.id === id)?.name || '';
 const scheduleName = (id) => state.meta.schedules.find((s) => s.id === id)?.name || id;
 const opposite = (role) => (role === 'kinalo' ? 'kereso' : 'kinalo');
+// Munkát kínálni csak regisztrált gazdaság, keresni csak magánszemély tud.
+const ROLE_OF_ACCOUNT = { gazdasag: 'kinalo', maganszemely: 'kereso' };
+const myRole = () => ROLE_OF_ACCOUNT[state.user?.accountType];
+const displayName = (u) => (u?.accountType === 'gazdasag' && u.farm ? u.farm.name : u?.name || '');
 
 function pathOf(id) {
   const out = [];
@@ -142,10 +146,11 @@ function renderHome() {
         <li><b>Engedj, ahol megéri</b>, aztán küldj megkeresést az illeszkedőknek.</li>
       </ol>
       <div class="choice">
-        <a href="#/uj/kinalo"><strong>Munkát kínálok</strong><span class="muted">Gazda vagyok, munkaerőt keresek.</span></a>
-        <a href="#/uj/kereso"><strong>Munkát keresek</strong><span class="muted">Dolgoznék, munkát keresek.</span></a>
+        <a href="#/uj/kinalo"><strong>Munkát kínálok</strong><span class="muted">A Farmatlaszban regisztrált gazdaságoknak.</span></a>
+        <a href="#/uj/kereso"><strong>Munkát keresek</strong><span class="muted">Magánszemélyeknek, akik dolgoznának.</span></a>
       </div>
-      <p class="muted small">Regisztráció nélkül is kipróbálhatod; megkeresést küldeni belépés után tudsz.</p>
+      <p class="muted small">Regisztráció nélkül is megnézheted, hány lehetőség van. Hirdetést feladni és megkeresést küldeni belépés után lehet:
+      munkát kínálni gazdaságként (a Farmatlaszban már regisztrált gazdaság adószámával), munkát keresni magánszemélyként.</p>
     </section>`;
 }
 
@@ -163,7 +168,17 @@ function renderLogin() {
       </form>
       <form class="card" id="register">
         <h2>Regisztráció</h2>
-        <label>Név</label><input type="text" name="name" required autocomplete="name">
+        <fieldset class="acct" style="border:0;padding:0;margin:0">
+          <legend class="sr">Fiók típusa</legend>
+          <label class="check"><input type="radio" name="accountType" value="maganszemely" checked> <span><b>Magánszemély</b> – munkát keresek</span></label>
+          <label class="check"><input type="radio" name="accountType" value="gazdasag"> <span><b>Gazdaság</b> – munkát kínálok</span></label>
+        </fieldset>
+        <div data-farm hidden>
+          <label for="r-tax">A gazdaság adószáma</label><input id="r-tax" type="text" name="taxNumber" inputmode="numeric" placeholder="12345678-2-03">
+          <p class="hint">Munkát csak a Farmatlaszban már regisztrált gazdaságok kínálhatnak; a fiókot az adószám alapján kapcsoljuk a gazdasághoz.
+          Bemutatóhoz: <code>12345678-2-03</code> (Tiszamenti Zöldség Kft.), <code>23456789-2-05</code> (Hegyalja Szőlőbirtok).</p>
+        </div>
+        <label data-name-label>Név</label><input type="text" name="name" required autocomplete="name">
         <label>E-mail</label><input type="email" name="email" required autocomplete="email">
         <label>Telefon</label><input type="text" name="phone" autocomplete="tel">
         <p class="hint">Az elérhetőségedet csak az látja, akinek a megkeresését elfogadod (vagy aki a tiédet elfogadja).</p>
@@ -172,6 +187,16 @@ function renderLogin() {
         <button class="btn">Regisztrálok</button>
       </form>
     </div>`;
+  const reg = document.getElementById('register');
+  const syncType = () => {
+    const farm = reg.accountType.value === 'gazdasag';
+    reg.querySelector('[data-farm]').hidden = !farm;
+    reg.taxNumber.required = farm;
+    reg.querySelector('[data-name-label]').textContent = farm ? 'Kapcsolattartó neve' : 'Név';
+  };
+  reg.addEventListener('change', syncType);
+  if (state.draft?.role === 'kinalo') reg.accountType.value = 'gazdasag';
+  syncType();
   for (const id of ['login', 'register']) {
     const form = document.getElementById(id);
     form.addEventListener('submit', async (e) => {
@@ -196,13 +221,13 @@ async function renderMyProfiles() {
   const list = await api('GET', '/api/profiles');
   $app.innerHTML = `
     <div class="row" style="justify-content:space-between">
-      <h1>Hirdetéseim</h1>
-      <div class="row">
-        <a class="btn" href="#/uj/kinalo">+ Munkát kínálok</a>
-        <a class="btn secondary" href="#/uj/kereso">+ Munkát keresek</a>
+      <div>
+        <h1>Hirdetéseim</h1>
+        <p class="muted small" style="margin:0">${esc(displayName(state.user))} · ${state.user.accountType === 'gazdasag' ? 'regisztrált gazdaság' : 'magánszemély'}</p>
       </div>
+      ${myRole() === 'kinalo' ? '<a class="btn" href="#/uj/kinalo">+ Munkát kínálok</a>' : '<a class="btn" href="#/uj/kereso">+ Munkát keresek</a>'}
     </div>
-    ${list.length ? '' : '<p class="muted">Még nincs hirdetésed. Kezdd el a fenti gombok egyikével.</p>'}
+    ${list.length ? '' : `<p class="muted">Még nincs hirdetésed. ${myRole() === 'kinalo' ? 'Add fel, milyen munkára keresel embert.' : 'Add fel, milyen munkát keresel.'}</p>`}
     ${list.map((p) => `
       <div class="card">
         <div class="row" style="justify-content:space-between">
@@ -265,6 +290,7 @@ async function openEditor({ role, id }) {
     }
   } else {
     if (!['kinalo', 'kereso'].includes(role)) return (location.hash = '#/');
+    if (state.user && myRole() !== role) return renderWrongRole(role);
     if (!(continuing && state.draft?.role === role)) {
       state.draft = emptyDraft(role);
       state.editingId = null;
@@ -274,6 +300,18 @@ async function openEditor({ role, id }) {
   state.treeCounts = await api('GET', `/api/tree-counts?role=${state.draft.role}`).catch(() => ({}));
   renderEditor();
   refreshPreview();
+}
+
+function renderWrongRole(role) {
+  state.draft = null;
+  $app.innerHTML = `
+    <div class="card">
+      <h1>${role === 'kinalo' ? 'Munkát csak gazdaság kínálhat' : 'Munkát magánszemélyként lehet keresni'}</h1>
+      <p>${role === 'kinalo'
+        ? 'Munkát a Farmatlaszban regisztrált gazdaságok kínálhatnak. Te magánszemélyként vagy belépve, így munkát keresni tudsz.'
+        : 'Gazdaságként vagy belépve, így munkát kínálni tudsz. Munkát keresni magánszemélyként, külön fiókkal lehet.'}</p>
+      <a class="btn" href="#/uj/${myRole()}">${myRole() === 'kinalo' ? 'Munkát kínálok' : 'Munkát keresek'}</a>
+    </div>`;
 }
 
 function renderEditor() {
@@ -510,6 +548,7 @@ async function saveDraft() {
     return;
   }
   try {
+    if (myRole() !== state.draft.role) return renderWrongRole(state.draft.role);
     const saved = state.editingId
       ? await api('PUT', `/api/profiles/${state.editingId}`, state.draft)
       : await api('POST', '/api/profiles', state.draft);
@@ -591,7 +630,7 @@ async function renderInbox() {
       <p>${esc(q.message)}</p>
       <p><span class="status ${q.status}">${statusText(q.status)}</span></p>
       ${q.reply ? `<p class="small"><b>Válasz:</b> ${esc(q.reply)}</p>` : ''}
-      ${q.contact ? `<p class="small"><b>Elérhetőség:</b> ${esc(q.otherName)} · <a href="mailto:${esc(q.contact.email)}">${esc(q.contact.email)}</a>${q.contact.phone ? ` · <a href="tel:${esc(q.contact.phone)}">${esc(q.contact.phone)}</a>` : ''}</p>` : ''}
+      ${q.contact ? `<p class="small"><b>Elérhetőség:</b> ${esc(q.otherName)}${q.otherContactPerson ? ` (kapcsolattartó: ${esc(q.otherContactPerson)})` : ''} · <a href="mailto:${esc(q.contact.email)}">${esc(q.contact.email)}</a>${q.contact.phone ? ` · <a href="tel:${esc(q.contact.phone)}">${esc(q.contact.phone)}</a>` : ''}</p>` : ''}
       ${q.direction === 'bejovo' && q.status === 'uj' ? `
         <form data-resp="${q.id}">
           <textarea name="reply" placeholder="Válasz (nem kötelező)"></textarea>
