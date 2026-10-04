@@ -9,6 +9,11 @@ illeszkedő ajánlat van. A rendszer azt is megmutatja, **melyik engedmény menn
 lehetőséget hozna**, így a felhasználó a kisebb halmaztól halad a nagyobb felé, és ő dönti
 el, mit ad fel.
 
+> **A valódi beépítés a FarmAtlas repóban van** (`patayg76/FarmAtlas`, `claude/sweet-wozniak-ivaebn` ág,
+> `Application/60_munka/TERV.md`). Ott a meglévő két fiók a belépés alapja: a gazdaság a szerkesztőlinkjével (átvett
+> adatlap), a munkát kereső a vásárlói (kedvenc-) fiókjával. Ez a prototípus a felület és a párosítás mintája; a jelszavas
+> regisztráció és az adószámos gazdaság-azonosítás csak itt van, a FarmAtlasban nem.
+
 ## Futtatás
 
 ```bash
