@@ -17,6 +17,10 @@ npm start          # http://localhost:3000  (PORT változóval állítható)
 npm test           # párosító motor + API tesztek
 ```
 
+Kipróbálható bemutató telepítés nélkül: https://claude.ai/artifact/4B4GgkdsjbxR2AhuKR1W49
+Ez ugyanaz az alkalmazás egyetlen HTML-fájlba csomagolva (`node demo/build.mjs` → `dist/`).
+Az API ilyenkor a böngészőben fut, az adatok a látogató böngészőjében tárolódnak.
+
 Nincs külső függőség, Node.js 20+ kell hozzá. Első indításkor bemutató adatokkal töltődik
 fel (`data/db.json`). A bemutató fiókok: `gazda@demo.hu` és `munkas@demo.hu`, jelszó: `demo1234`.
 
@@ -52,7 +56,9 @@ fel (`data/db.json`). A bemutató fiókok: `gazda@demo.hu` és `munkas@demo.hu`,
 
 ```
 src/match.js          párosító motor (failures, matches, suggestions, treeCounts) – tiszta függvények
-src/server.js         REST API + statikus kiszolgálás (node:http)
+src/api.js            az API útvonalai, környezetfüggetlenül (Node és böngésző)
+src/server.js         Node HTTP-szerver: statikus kiszolgálás + src/api.js
+demo/                 böngészős demó (fetch-réteg + egyfájlos build)
 src/store.js          JSON-fájl tároló, jelszó-hash (scrypt)
 src/seed.js           bemutató adatok
 src/data/             munkafa, feltétel-katalógus, települések

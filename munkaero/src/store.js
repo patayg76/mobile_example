@@ -20,7 +20,7 @@ export function openStore(file) {
   return { db, save, isEmpty: () => db.users.length === 0 };
 }
 
-export const newId = (prefix) => `${prefix}_${crypto.randomBytes(6).toString('hex')}`;
+export { newId } from './ids.js';
 
 export function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
   const hash = crypto.scryptSync(password, salt, 32).toString('hex');

@@ -5,7 +5,13 @@ const $nav = document.getElementById('nav');
 
 const state = {
   meta: null,
-  token: localStorage.getItem('munkaero_token') || null,
+  token: (() => {
+    try {
+      return localStorage.getItem('munkaero_token');
+    } catch {
+      return null;
+    }
+  })(),
   user: null,
   draft: null,        // szerkesztett hirdetés
   editingId: null,    // meglévő hirdetés azonosítója szerkesztéskor
@@ -216,9 +222,21 @@ async function renderMyProfiles() {
         </div>
       </div>`).join('')}`;
 
+  // Kétlépéses törlés (a confirm() párbeszédablak nem mindenhol érhető el).
   $app.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', async () => {
-    if (!confirm('Biztosan törlöd ezt a hirdetést?')) return;
+    if (b.dataset.armed !== '1') {
+      b.dataset.armed = '1';
+      b.textContent = 'Biztosan törlöd? Kattints újra';
+      setTimeout(() => {
+        if (b.isConnected) {
+          b.dataset.armed = '';
+          b.textContent = 'Törlés';
+        }
+      }, 4000);
+      return;
+    }
     await api('DELETE', `/api/profiles/${b.dataset.del}`);
+    toast('Hirdetés törölve.');
     renderMyProfiles();
   }));
   $app.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', async () => {

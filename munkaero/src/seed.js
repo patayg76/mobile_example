@@ -3,7 +3,7 @@
 import { JOB_NODES } from './data/jobTree.js';
 import { PLACES } from './data/places.js';
 import { ATTRIBUTES, SCHEDULES } from './data/catalog.js';
-import { hashPassword, newId } from './store.js';
+import { newId } from './ids.js';
 
 function rng(seed) {
   let s = seed >>> 0;
@@ -19,7 +19,8 @@ function rng(seed) {
 const FIRST = ['Anna', 'Béla', 'Csaba', 'Dóra', 'Erika', 'Ferenc', 'Gábor', 'Hajnalka', 'István', 'Judit', 'Károly', 'László', 'Mária', 'Norbert', 'Orsolya', 'Péter', 'Réka', 'Sándor', 'Tamás', 'Zoltán'];
 const LAST = ['Kovács', 'Szabó', 'Tóth', 'Varga', 'Kiss', 'Molnár', 'Nagy', 'Farkas', 'Balogh', 'Papp', 'Takács', 'Juhász', 'Lakatos', 'Mészáros', 'Oláh'];
 
-export function seed(store, { year = new Date().getFullYear() } = {}) {
+// hashPassword: a futtatókörnyezet jelszó-hash függvénye (Node: scrypt).
+export function seed(store, { hashPassword, year = new Date().getFullYear() }) {
   const r = rng(20261004);
   const pick = (arr) => arr[Math.floor(r() * arr.length)];
   const some = (arr, p) => arr.filter(() => r() < p);
@@ -106,6 +107,15 @@ export function seed(store, { year = new Date().getFullYear() } = {}) {
     schedules: ['szezonalis', 'alkalmi'], provides: ['heti_fizetes', 'efo'], requires: ['sajat_auto'],
     ageMin: 18, ageMax: 55, minExperience: 1, headcount: 6, note: 'Reggel 6-tól, kora délutánig.',
   });
+  // Egy bejövő megkeresés a demo gazdának, hogy az elfogadás azonnal kipróbálható legyen.
+  const ildiko = store.db.profiles.find((p) => p.title.startsWith('Ildikó:'));
+  const gazdaProfile = store.db.profiles[store.db.profiles.length - 1];
+  store.db.inquiries.push({
+    id: newId('q'), fromUserId: ildiko.userId, toUserId: gazda.id, fromProfileId: ildiko.id, toProfileId: gazdaProfile.id,
+    message: 'Jó napot! Tavaly is szedtem cseresznyét Cegléden, saját autóval járok. Május végétől ráérek.',
+    status: 'uj', reply: '', createdAt: now,
+  });
+
   const munkas = mkUser('Demo Munkás', 'munkas@demo.hu', 'demo1234');
   store.db.profiles.push({
     id: newId('p'), userId: munkas.id, role: 'kereso', active: true, createdAt: now,
