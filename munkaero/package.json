@@ -1,0 +1,12 @@
+{
+  "name": "farmatlasz-munkaero",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Farmatlasz munkaerő-közvetítő: halmazalapú párosítás gazdák és munkát keresők között",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}
